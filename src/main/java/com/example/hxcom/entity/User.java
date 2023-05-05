@@ -2,8 +2,60 @@ package com.example.hxcom.entity;
 
 public class User {
     private Integer id;
+    private String img;
     private String name;
+
+    public String getImg() {
+        return img;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", img='" + img + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", collectList='" + collectList + '\'' +
+                ", inProcess='" + inProcess + '\'' +
+                ", age=" + age +
+                ", role=" + role +
+                '}';
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
     private String password;
+    private String collectList;
+    private String inProcess;
+    private int age;
+
+    public String getCollectList() {
+        return collectList;
+    }
+
+    public void setCollectList(String collectList) {
+        this.collectList = collectList;
+    }
+
+    public String getInProcess() {
+        return inProcess;
+    }
+
+    public void setInProcess(String inProcess) {
+        this.inProcess = inProcess;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     private int role;
     public int getId() {
         return id;
@@ -11,16 +63,6 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                '}';
     }
 
     public int getRole() {

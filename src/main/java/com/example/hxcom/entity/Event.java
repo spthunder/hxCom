@@ -3,14 +3,10 @@ package com.example.hxcom.entity;
 import java.util.Date;
 
 public class Event {
-    private int id;
+    private Integer id;
     private String title;
     private String name;
     private String location;
-
-    public String getLocation() {
-        return location;
-    }
 
     @Override
     public String toString() {
@@ -19,6 +15,8 @@ public class Event {
                 ", title='" + title + '\'' +
                 ", name='" + name + '\'' +
                 ", location='" + location + '\'' +
+                ", love=" + love +
+                ", collect=" + collect +
                 ", img='" + img + '\'' +
                 ", content='" + content + '\'' +
                 ", time='" + time + '\'' +
@@ -27,6 +25,29 @@ public class Event {
                 ", tel='" + tel + '\'' +
                 '}';
     }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public int getLove() {
+        return love;
+    }
+
+    public void setLove(int love) {
+        this.love = love;
+    }
+
+    public int getCollect() {
+        return collect;
+    }
+
+    public void setCollect(int collect) {
+        this.collect = collect;
+    }
+
+    private Integer love;
+    private Integer collect;
 
     public void setLocation(String location) {
         this.location = location;
@@ -44,7 +65,7 @@ public class Event {
     private String content;
     private String time;
     private String tag;
-    private int type;
+    private Integer type;
     private String tel;
 
     public int getId() {

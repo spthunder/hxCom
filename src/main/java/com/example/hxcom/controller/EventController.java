@@ -1,12 +1,13 @@
 package com.example.hxcom.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.hxcom.entity.Event;
+import com.example.hxcom.entity.User;
 import com.example.hxcom.mapper.EventMapper;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,14 +16,14 @@ public class EventController {
     @Autowired
     private EventMapper eventMapper;
 
-    @GetMapping("/event")
+    @GetMapping("/event")  //请求全部事件
     public List query(){
         List<Event> list = eventMapper.selectList(null);
         System.out.println(list);
         return list;
     }
     //普通类型
-    @GetMapping("/event/common")
+    @GetMapping("/event/common")  //请求普通类型事件
     public List queryCommon(){
         QueryWrapper<Event> eventQueryWrapper = new QueryWrapper<>();
 //    QueryWrapper<User> userQueryWrapper = Wrappers.query(); 和上面一样的效果
@@ -32,7 +33,7 @@ public class EventController {
         return list;
     }
     //紧急类型
-    @GetMapping("/event/urgent")
+    @GetMapping("/event/urgent")  //请求紧急类型事件
     public List queryUrgent(){
         QueryWrapper<Event> eventQueryWrapper = new QueryWrapper<>();
 //    QueryWrapper<User> userQueryWrapper = Wrappers.query(); 和上面一样的效果
@@ -41,7 +42,7 @@ public class EventController {
         System.out.println(list);
         return list;
     }
-    @PostMapping("/event/add")
+    @PostMapping("/event")     //添加事件
     public String save(Event event){
         int res = eventMapper.insert(event);
         if(res > 0){
@@ -50,5 +51,60 @@ public class EventController {
             return "插入失败";
         }
     }
+    @DeleteMapping("/event/{id}")
+    public String deleteById(@PathVariable int id){
+        QueryWrapper<Event> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",id);
+        int res  = eventMapper.delete(wrapper);
+        if(res > 0){
+            return "插入成功";
+        }else{
+            return "插入失败";
+        }
+    }
+
+
+    @ApiOperation("喜欢和收藏+1,必须:数据类型 string(love/collect);事件id int;操作类型:(add/sub)")
+    @PutMapping("/event/{select}/{operation}")  //love++ 喜欢加1,
+    public String update(@PathVariable String select, @PathVariable String operation, Event event){
+        UpdateWrapper<Event> wrapper= new UpdateWrapper<>();
+        if(select.equals("love")){
+            wrapper.eq("id", event.getId());
+            int num = event.getLove();
+            if(operation.equals("add")){
+                num++;
+            }else if(operation.equals("sub")){
+                num--;
+                if(num < 0) num = 0;
+            }
+            wrapper.set("love", num);
+        }else if(select.equals("collect")){
+            wrapper.eq("id", event.getId());
+            int num = event.getCollect();
+            if(operation.equals("add")){
+                num++;
+            }else if(operation.equals("sub")){
+                num--;
+                if(num < 0) num = 0;
+            }
+            wrapper.set("collect", num);
+        }
+        int res = eventMapper.update(null, wrapper);
+        if(res > 0){
+            return "更新成功";
+        }else{
+            return "更新失败";
+        }
+
+    }
+
+//    @PutMapping("/event/collect")  //collect++ 收藏加1
+//    public String update(Event event){
+//        UpdateWrapper<Event> wrapper= new UpdateWrapper<>();
+//        wrapper.eq("id", event.getId());
+//        wrapper.set("collect", event.getCollect() + 1);
+//        int res = eventMapper.update(null, wrapper);
+//        return "更新成功";
+//    }
 
 }
