@@ -64,6 +64,7 @@ public class EventController {
     }
 
 
+
     @ApiOperation("喜欢和收藏+1,必须:数据类型 string(love/collect);事件id int;操作类型:(add/sub)")
     @PutMapping("/event/{select}/{operation}")  //love++ 喜欢加1,
     public String update(@PathVariable String select, @PathVariable String operation, Event event){
