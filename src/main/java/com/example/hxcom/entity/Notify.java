@@ -1,14 +1,18 @@
 package com.example.hxcom.entity;
 
-public class System {
-    private Integer id;
+public class Notify {
+    private int id;
     private String title;
     private String content;
     private String time;
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
-        return "System{" +
+        return "Notify{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
@@ -16,11 +20,7 @@ public class System {
                 '}';
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
