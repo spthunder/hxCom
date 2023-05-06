@@ -6,9 +6,12 @@ import com.example.hxcom.entity.Event;
 import com.example.hxcom.entity.User;
 import com.example.hxcom.mapper.EventMapper;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -63,6 +66,26 @@ public class EventController {
         }
     }
 
+    @ApiOperation("根据id查询事件 一次只能查询一个")
+    @GetMapping("/event/{id}")
+    public List<Event> queryById(@PathVariable int id){
+        QueryWrapper<Event> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id);
+        List<Event> list = eventMapper.selectList(wrapper);
+        return list;
+    }
+    @ApiOperation("根据id查询事件 一次可以查询多个 传入string类型如1 2")
+    @GetMapping("/event/ids/{ids}")
+    public List<Event> queryByIds(@PathVariable String ids){
+        String[] a = ids.split(" ");
+        List<Integer> list1 = new ArrayList<Integer>();
+        for(int i = 0; i < a.length; i++){
+            list1.add(Integer.parseInt(a[i]));
+        }
+//        QueryWrapper<Event> wrapper = new QueryWrapper<>();
+        List<Event> list = eventMapper.selectBatchIds(list1);
+        return list;
+    }
 
 
     @ApiOperation("喜欢和收藏+1,必须:数据类型 string(love/collect);事件id int;操作类型:(add/sub)")
