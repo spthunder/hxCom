@@ -3,7 +3,7 @@ package com.example.hxcom.entity;
 import java.util.Date;
 
 public class Event {
-    private Integer id;
+    private int id;
     private String title;
     private String name;
     private String location;

@@ -46,7 +46,8 @@ public class EventController {
         return list;
     }
     @PostMapping("/event")     //添加事件
-    public String save(Event event){
+    public String add(Event event){
+        System.out.println(event.toString());
         int res = eventMapper.insert(event);
         if(res > 0){
             return "插入成功";
@@ -86,6 +87,14 @@ public class EventController {
         List<Event> list = eventMapper.selectBatchIds(list1);
         return list;
     }
+    @ApiOperation("根据name查询事件 一次只能查询一个")
+    @GetMapping("/event/from/{name}")
+    public List<Event> queryByName(@PathVariable String name){
+        QueryWrapper<Event> wrapper = new QueryWrapper<>();
+        wrapper.eq("name", name);
+        List<Event> list = eventMapper.selectList(wrapper);
+        return list;
+    }
 
 
     @ApiOperation("喜欢和收藏+1,必须:数据类型 string(love/collect);事件id int;操作类型:(add/sub)")
@@ -119,7 +128,6 @@ public class EventController {
         }else{
             return "更新失败";
         }
-
     }
 
 //    @PutMapping("/event/collect")  //collect++ 收藏加1

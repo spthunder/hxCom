@@ -1,7 +1,7 @@
 package com.example.hxcom.entity;
 
 public class User {
-    private Integer id;
+    private int id;
     private String img;
     private String name;
 

@@ -24,7 +24,17 @@ public class UserController {
         userQueryWrapper.eq("name",user.getName());
         return userMapper.selectList(userQueryWrapper);
     }
+    @ApiOperation("新增用户")
+    @PostMapping("/user")
+    public String addUser(User user){
+        int res = userMapper.insert(user);
+        if(res > 0){
+            return "添加用户成功";
+        }else{
+            return "添加用户失败";
+        }
 
+    }
     @ApiOperation("查询所有用户信息")
     @GetMapping("/user")
     public List<User> getUser(){
