@@ -88,10 +88,18 @@ public class EventController {
         return list;
     }
     @ApiOperation("根据name查询事件 一次只能查询一个")
-    @GetMapping("/event/from/{name}")
+    @GetMapping("/event/fromByName/{name}")
     public List<Event> queryByName(@PathVariable String name){
         QueryWrapper<Event> wrapper = new QueryWrapper<>();
         wrapper.eq("name", name);
+        List<Event> list = eventMapper.selectList(wrapper);
+        return list;
+    }
+    @ApiOperation("根据用户Id查询事件 一次只能查询一个")
+    @GetMapping("/event/fromById/{id}")
+    public List<Event> queryByUserId(@PathVariable int id){
+        QueryWrapper<Event> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", id);
         List<Event> list = eventMapper.selectList(wrapper);
         return list;
     }

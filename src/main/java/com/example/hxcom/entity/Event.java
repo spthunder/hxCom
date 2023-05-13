@@ -7,6 +7,11 @@ public class Event {
     private String title;
     private String name;
     private String location;
+    private int userId;
+
+    public int getUserId() {
+        return userId;
+    }
 
     @Override
     public String toString() {
@@ -15,6 +20,7 @@ public class Event {
                 ", title='" + title + '\'' +
                 ", name='" + name + '\'' +
                 ", location='" + location + '\'' +
+                ", userId=" + userId +
                 ", love=" + love +
                 ", collect=" + collect +
                 ", img='" + img + '\'' +
@@ -24,6 +30,10 @@ public class Event {
                 ", type=" + type +
                 ", tel='" + tel + '\'' +
                 '}';
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getLocation() {

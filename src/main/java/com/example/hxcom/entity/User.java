@@ -4,7 +4,6 @@ public class User {
     private int id;
     private String img;
     private String name;
-
     public String getImg() {
         return img;
     }
