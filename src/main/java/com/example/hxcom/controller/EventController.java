@@ -137,7 +137,14 @@ public class EventController {
             return "更新失败";
         }
     }
-
+    @GetMapping("/event/process/{process}")
+    @ApiOperation("0 未建立 1 待审核 2 流程中 3 完成")
+    public List queryByProcess(@PathVariable int process){
+        QueryWrapper<Event> wrapper = new QueryWrapper<>();
+        wrapper.eq("process", process);
+        List<Event> list = eventMapper.selectList(wrapper);
+        return list;
+    }
 //    @PutMapping("/event/collect")  //collect++ 收藏加1
 //    public String update(Event event){
 //        UpdateWrapper<Event> wrapper= new UpdateWrapper<>();

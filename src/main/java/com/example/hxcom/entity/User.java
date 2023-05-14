@@ -4,8 +4,9 @@ public class User {
     private int id;
     private String img;
     private String name;
-    public String getImg() {
-        return img;
+
+    public int getTag() {
+        return tag;
     }
 
     @Override
@@ -14,12 +15,22 @@ public class User {
                 "id=" + id +
                 ", img='" + img + '\'' +
                 ", name='" + name + '\'' +
+                ", tag=" + tag +
                 ", password='" + password + '\'' +
                 ", collectList='" + collectList + '\'' +
                 ", inProcess='" + inProcess + '\'' +
                 ", age=" + age +
                 ", role=" + role +
                 '}';
+    }
+
+    public void setTag(int tag) {
+        this.tag = tag;
+    }
+
+    private int tag;
+    public String getImg() {
+        return img;
     }
 
     public void setImg(String img) {

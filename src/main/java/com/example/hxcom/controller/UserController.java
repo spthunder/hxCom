@@ -35,14 +35,22 @@ public class UserController {
         }
 
     }
-    @ApiOperation("查询所有用户信息")
+    @ApiOperation("查询所有用户信息 0残障 1老人 2小孩 3其他")
+    @GetMapping("/user/tag/{tag}")
+    public List<User> getUserByTag(@PathVariable int tag){
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("tag", tag);
+        List<User> list = userMapper.selectList(wrapper);
+        return list;
+    }
+
+    @ApiOperation("根据标签查询用户信息")
     @GetMapping("/user")
     public List<User> getUser(){
         List<User> list = userMapper.selectList(null);
         System.out.println(list);
         return list;
     }
-
     @ApiOperation("更新用户信息,id,age,name,img")
     @PutMapping("/user")
     public String updateUser(User user){

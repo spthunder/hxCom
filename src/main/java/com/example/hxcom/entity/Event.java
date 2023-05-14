@@ -13,6 +13,14 @@ public class Event {
         return userId;
     }
 
+    public int getTag() {
+        return tag;
+    }
+
+    public void setTag(int tag) {
+        this.tag = tag;
+    }
+
     @Override
     public String toString() {
         return "Event{" +
@@ -74,7 +82,7 @@ public class Event {
     private String img;
     private String content;
     private String time;
-    private String tag;
+    private int tag;
     private Integer type;
     private String tel;
 
@@ -118,13 +126,6 @@ public class Event {
         this.time = time;
     }
 
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
 
     public int getType() {
         return type;
