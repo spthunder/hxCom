@@ -145,6 +145,31 @@ public class EventController {
         List<Event> list = eventMapper.selectList(wrapper);
         return list;
     }
+
+    @ApiOperation("根据标题内容用户名模糊查询")
+    @GetMapping("/event/search/{target}")
+    public List<Event> getEventByTarget(@PathVariable String target){
+        QueryWrapper<Event> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("title", target).or().like("content", target).or().like("name", target);
+        List<Event> events = eventMapper.selectList(queryWrapper);
+        return events;
+    }
+//    @ApiOperation("根据内容模糊查询")
+//    @GetMapping("/event/content/{content}")
+//    public List<Event> getEventByContent(@PathVariable String content){
+//        QueryWrapper<Event> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.like("content", content);
+//        List<Event> events = eventMapper.selectList(queryWrapper);
+//        return events;
+//    }
+
+
+//    @ApiOperation("更新")
+//    @PutMapping("/updateById")
+//    public List updateById(@RequestBody Event event) {
+//        int update = eventMapper.updateById(event);
+//
+//    }
 //    @PutMapping("/event/collect")  //collect++ 收藏加1
 //    public String update(Event event){
 //        UpdateWrapper<Event> wrapper= new UpdateWrapper<>();

@@ -16,7 +16,7 @@ public class NotifyController {
     @Autowired
     private NotifyMapper notifyMapper;
 
-    @ApiOperation("显示所以通知")
+    @ApiOperation("显示所有通知")
     @GetMapping("/notify")
     public List<Notify> getNotify(){
         List<Notify> list = notifyMapper.selectList(null);
@@ -24,8 +24,8 @@ public class NotifyController {
     }
 
     @ApiOperation("新增通知")
-    @PutMapping("/notify")
-    public String save(Notify notify){
+    @PostMapping("/notify")
+    public String add(Notify notify){
         int res = notifyMapper.insert(notify);
         if(res > 0){
             return "新增成功";
@@ -46,7 +46,23 @@ public class NotifyController {
             return "删除失败";
         }
     }
-
+    @ApiOperation("根据标题或内容模糊查询")
+    @GetMapping("/notify/search/{target}")
+    public List<Notify> getNotifyByTarget(@PathVariable String target){
+        QueryWrapper<Notify> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("title", target).or().like("content", target);
+        List<Notify> notifies = notifyMapper.selectList(queryWrapper);
+        System.out.println(notifies);
+        return notifies;
+    }
+//    @ApiOperation("根据内容模糊查询")
+//    @GetMapping("/notify/content/{content}")
+//    public List<Notify> getEventByContent(@PathVariable String content){
+//        QueryWrapper<Notify> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.like("content", content);
+//        List<Notify> notifies = notifyMapper.selectList(queryWrapper);
+//        return notifies;
+//    }
 
 
 
