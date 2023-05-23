@@ -1,6 +1,7 @@
 package com.example.hxcom.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.Update;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.hxcom.entity.Event;
 import com.example.hxcom.entity.User;

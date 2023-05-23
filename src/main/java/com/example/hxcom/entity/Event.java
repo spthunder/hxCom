@@ -8,6 +8,35 @@ public class Event {
     private String name;
     private String location;
     private int userId;
+    private int process;
+
+    public int getProcess() {
+        return process;
+    }
+
+    public void setProcess(int process) {
+        this.process = process;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", userId=" + userId +
+                ", process=" + process +
+                ", love=" + love +
+                ", collect=" + collect +
+                ", img='" + img + '\'' +
+                ", content='" + content + '\'' +
+                ", time='" + time + '\'' +
+                ", tag=" + tag +
+                ", type=" + type +
+                ", tel='" + tel + '\'' +
+                '}';
+    }
 
     public int getUserId() {
         return userId;
@@ -19,25 +48,6 @@ public class Event {
 
     public void setTag(int tag) {
         this.tag = tag;
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", name='" + name + '\'' +
-                ", location='" + location + '\'' +
-                ", userId=" + userId +
-                ", love=" + love +
-                ", collect=" + collect +
-                ", img='" + img + '\'' +
-                ", content='" + content + '\'' +
-                ", time='" + time + '\'' +
-                ", tag='" + tag + '\'' +
-                ", type=" + type +
-                ", tel='" + tel + '\'' +
-                '}';
     }
 
     public void setUserId(int userId) {

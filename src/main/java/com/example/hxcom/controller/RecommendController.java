@@ -1,128 +1,118 @@
 package com.example.hxcom.controller;
 
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.hxcom.entity.Event;
+import com.example.hxcom.entity.Recommend;
+
+import com.example.hxcom.entity.User;
+import com.example.hxcom.mapper.EventMapper;
+import com.example.hxcom.mapper.RecommendMapper;
+import com.example.hxcom.mapper.UserMapper;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class RecommendController {
-    @GetMapping("/recommend")
+    @Autowired
+    private RecommendMapper recommendMapper;
 
-    public String getRecommend(){
-        return "推荐成功";
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private EventMapper eventMapper;
+
+    @ApiOperation("根据id查询推荐表")
+    @GetMapping("/getById/{id}")
+    public Map<String, Object> getById(@PathVariable int id){
+        Map<String, Object> data = new HashMap<>();
+        Recommend recommend = recommendMapper.selectById(id);
+        if (recommend==null) {
+            data.put("msg","null");
+            return data;
+        } else {
+            try {
+                Event event = eventMapper.selectById(recommend.getEventId());
+                User user = userMapper.selectById(recommend.getUserId());
+                data.put("recommend", recommend);
+                data.put("event", event);
+                data.put("user", user);
+                data.put("msg", "success");
+                return data;
+            } catch (Exception e) {
+                e.printStackTrace();
+                data.put("msg", "exception");
+                return data;
+            }
+        }
     }
 
-    public class ItemBasedCF {
-        // 用户-物品评分矩阵
-        private static int[][] matrix = {
-                {3, 4, 0, 3},
-                {4, 3, 4, 0},
-                {0, 4, 5, 3},
-                {5, 0, 3, 4},
-                {3, 4, 0, 5}
-        };
 
-        // 用户收藏列表
-        private static int[][] collectList = {
-                {1, 3},
-                {0, 2},
-                {1, 2},
-                {0},
-                {1, 3}
-        };
-
-        // 相似度矩阵
-        private static double[][] similarityMatrix;
-
-        // 推荐列表长度
-        private static final int RECOMMEND_LIST_LENGTH = 2;
-
-        public static void main(String[] args) {
-            // 计算相似度矩阵
-            similarityMatrix = calculateSimilarityMatrix(matrix);
-
-            // 为用户1推荐帖子
-            int[] recommendList = recommend(matrix, similarityMatrix, collectList, 0);
-
-            // 输出推荐列表
-            System.out.println("为用户1推荐的帖子是：");
-            for (int i = 0; i < recommendList.length; i++) {
-                System.out.println("帖子" + recommendList[i]);
-            }
+    @GetMapping("/recommend/{userId}/{eventId}")
+    public String addScore(@PathVariable int userId, @PathVariable int eventId){
+        QueryWrapper<Recommend> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", userId);
+        wrapper.eq("event_id", eventId);
+        Recommend recommend = recommendMapper.selectOne(wrapper);
+        int operate = 0;
+        if (recommend==null) {
+            Recommend r = new Recommend();
+            r.setUserId(userId);
+            r.setEventId(eventId);
+            r.setScore(1);
+             operate = recommendMapper.insert(r);
+        } else {
+            recommend.setScore(recommend.getScore()+1);
+            operate = recommendMapper.updateById(recommend);
         }
-
-        /**
-         * 计算相似度矩阵
-         *
-         * @param matrix 用户-物品评分矩阵
-         * @return 相似度矩阵
-         */
-        private static double[][] calculateSimilarityMatrix(int[][] matrix) {
-            int userCount = matrix.length;
-            int itemCount = matrix[0].length;
-            double[][] similarityMatrix = new double[itemCount][itemCount];
-
-            for (int i = 0; i < itemCount; i++) {
-                for (int j = i + 1; j < itemCount; j++) {
-                    double similarity = 0;
-                    for (int k = 0; k < userCount; k++) {
-                        similarity += matrix[k][i] * matrix[k][j];
-                    }
-                    similarityMatrix[i][j] = similarity;
-                    similarityMatrix[j][i] = similarity;
-                }
-            }
-
-            return similarityMatrix;
-        }
-
-        /**
-         * 为用户推荐帖子
-         *
-         * @param matrix           用户-物品评分矩阵
-         * @param similarityMatrix 相似度矩阵
-         * @param collectList      用户收藏列表
-         * @param userId           用户编号
-         * @return 推荐列表
-         */
-        private static int[] recommend(int[][] matrix, double[][] similarityMatrix, int[][] collectList, int userId) {
-            int itemCount = matrix[0].length;
-            double[] scores = new double[itemCount];
-            int[] recommendList = new int[RECOMMEND_LIST_LENGTH];
-
-            // 计算每个帖子的得分
-            for (int i = 0; i < itemCount; i++) {
-                if (matrix[userId][i] == 0) {
-                    double score = 0;
-                    for (int j = 0; j < itemCount; j++) {
-                        if (matrix[userId][j] != 0 && similarityMatrix[i][j] != 0) {
-                            score += matrix[userId][j] * similarityMatrix[i][j];
-                        }
-                    }
-                    scores[i] = score;
-                }
-            }
-
-            // 对收藏列表中的帖子加权
-            for (int i = 0; i < collectList[userId].length; i++) {
-                int itemId = collectList[userId][i];
-                for (int j = 0; j < itemCount; j++) {
-                    scores[j] += matrix[userId][itemId] * similarityMatrix[j][itemId];
-                }
-            }
-
-            // 获取得分最高的帖子编号
-            for (int i = 0; i < RECOMMEND_LIST_LENGTH; i++) {
-                int maxIndex = 0;
-                for (int j = 0; j < itemCount; j++) {
-                    if (scores[j] > scores[maxIndex]) {
-                        maxIndex = j;
-                    }
-                }
-                recommendList[i] = maxIndex;
-                scores[maxIndex] = 0;
-            }
-
-            return recommendList;
+        if (operate>0) {
+            // success
+            return "success";
+        } else {
+            return "failed";
+            // fail
         }
     }
+
+    @GetMapping("/recommend/listByUser/{userId}")
+    public Map<String, Object> listByUser(@PathVariable Integer userId) {
+        Map<String, Object> data = new HashMap<>();
+
+        QueryWrapper<Recommend> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", userId);
+        wrapper.orderByDesc("score");
+        try {
+            List<Recommend> recommends = recommendMapper.selectList(wrapper);
+            User user = userMapper.selectById(userId);
+            List<Event> list = new ArrayList<>();
+            for (Recommend recommend : recommends) {
+                Event event = eventMapper.selectById(recommend.getEventId());
+                if (event!=null) list.add(event);
+
+            }
+            data.put("user", user);
+            data.put("event_list", list);
+            if (list.isEmpty()) {
+                data.put("msg", "empty");
+            } else {
+                data.put("msg", "success");
+            }
+            return data;
+        } catch (Exception e) {
+            e.printStackTrace();
+            data.put("msg", "failed");
+            return  data;
+        }
+    }
+
+
 }

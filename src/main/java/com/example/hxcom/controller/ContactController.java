@@ -38,7 +38,7 @@ public class ContactController {
         return list3;
     }
     @PostMapping("/contact")     //添加帮扶记录
-    @ApiOperation("查询帮扶记录 传递contact beContacted contactName event")
+    @ApiOperation("添加帮扶记录 传递contact beContacted contactName event")
     public String add(Contact contact){
         int res = contactMapper.insert(contact);
         if(res > 0){
