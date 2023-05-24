@@ -58,6 +58,7 @@ public class RecommendController {
 
 
     @GetMapping("/recommend/{userId}/{eventId}")
+    @ApiOperation("建立推荐关系 传入userId和eventId")
     public String addScore(@PathVariable int userId, @PathVariable int eventId){
         QueryWrapper<Recommend> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id", userId);
@@ -84,6 +85,7 @@ public class RecommendController {
     }
 
     @GetMapping("/recommend/listByUser/{userId}")
+    @ApiOperation("根据userId查询推荐表")
     public Map<String, Object> listByUser(@PathVariable Integer userId) {
         Map<String, Object> data = new HashMap<>();
 

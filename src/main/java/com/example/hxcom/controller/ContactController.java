@@ -55,4 +55,13 @@ public class ContactController {
         System.out.println(list);
         return list;
     }
+    @GetMapping("/contact/{userId}/{eventId}") //查询是否已经帮扶 帮扶人ID，事件ID
+    @ApiOperation("查询是否已经帮扶 帮扶人ID，事件ID")
+    public List query(@PathVariable int userId, @PathVariable int eventId){
+        QueryWrapper<Contact> wrapper = new QueryWrapper<>();
+        wrapper.eq("contact", userId);
+        wrapper.eq("event", eventId);
+        List<Contact> list = contactMapper.selectList(wrapper);
+        return list;
+    }
 }
