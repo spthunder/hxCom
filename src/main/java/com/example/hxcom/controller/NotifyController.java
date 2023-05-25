@@ -55,6 +55,19 @@ public class NotifyController {
         System.out.println(notifies);
         return notifies;
     }
+
+    @ApiOperation("更新通知")
+    @PutMapping("/notify")
+    private String updateById(Notify notify){
+
+        int res = notifyMapper.updateById(notify);
+        if(res > 0){
+            return "更新成功";
+        }else{
+            return "更新失败";
+        }
+    }
+
 //    @ApiOperation("根据内容模糊查询")
 //    @GetMapping("/notify/content/{content}")
 //    public List<Notify> getEventByContent(@PathVariable String content){

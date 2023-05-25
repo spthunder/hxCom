@@ -63,13 +63,23 @@ public class UserController {
         return"更新成功";
     }
 
+    @ApiOperation("任意更新用户信息,id,age,name,img")
+    @PutMapping("/user/update")
+    public String updateByUser(User user){
+        int res = userMapper.updateById(user);
+        if(res > 0){
+            return "更新成功";
+        }else{
+            return "更新失败";
+        }
+    }
+
     @ApiOperation("模糊查询")
     @GetMapping("/user/{name}")
     public List<User> getUserByKey(@PathVariable String name){
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("name",name);
         List<User> users = userMapper.selectList(queryWrapper);
-
         return users;
     }
 

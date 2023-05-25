@@ -2,12 +2,17 @@ package com.example.hxcom.entity;
 
 public class User {
     private int id;
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
     private String img;
     private String name;
-
-    public int getTag() {
-        return tag;
-    }
 
     @Override
     public String toString() {
@@ -15,6 +20,7 @@ public class User {
                 "id=" + id +
                 ", img='" + img + '\'' +
                 ", name='" + name + '\'' +
+                ", tel='" + tel + '\'' +
                 ", tag=" + tag +
                 ", password='" + password + '\'' +
                 ", collectList='" + collectList + '\'' +
@@ -22,6 +28,11 @@ public class User {
                 ", age=" + age +
                 ", role=" + role +
                 '}';
+    }
+
+    private String tel;
+    public int getTag() {
+        return tag;
     }
 
     public void setTag(int tag) {
