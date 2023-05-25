@@ -4,17 +4,13 @@ public class Admin {
     private int id;
     private String name;
     private int password;
-
+    private String img;
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
+    public String getImg() {
+        return img;
     }
 
     @Override
@@ -23,9 +19,22 @@ public class Admin {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", password=" + password +
+                ", img='" + img + '\'' +
                 ", tel=" + tel +
                 ", isSuper=" + isSuper +
                 '}';
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {

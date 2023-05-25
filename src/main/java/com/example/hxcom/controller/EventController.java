@@ -105,6 +105,33 @@ public class EventController {
         return list;
     }
 
+    @ApiOperation("传入eventid，一键审核")
+    @PutMapping("/event/check/{id}")
+    public String check(@PathVariable int id){
+        UpdateWrapper<Event> wrapper = new UpdateWrapper<>();
+        wrapper.eq("id", id);
+        wrapper.set("process", 2);
+        int res = eventMapper.update(null, wrapper);
+        if(res > 0){
+            return "更新成功";
+        }else{
+            return "更新失败";
+        }
+    }
+
+    @ApiOperation("传入eventid，一键完成")
+    @PutMapping("/event/finish/{id}")
+    public String finish(@PathVariable int id){
+        UpdateWrapper<Event> wrapper = new UpdateWrapper<>();
+        wrapper.eq("id", id);
+        wrapper.set("process", 3);
+        int res = eventMapper.update(null, wrapper);
+        if(res > 0){
+            return "更新成功";
+        }else{
+            return "更新失败";
+        }
+    }
 
     @ApiOperation("喜欢和收藏+1,必须:数据类型 string(love/collect);事件id int;操作类型:(add/sub)")
     @PutMapping("/event/{select}/{operation}")  //love++ 喜欢加1,

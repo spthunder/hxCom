@@ -48,7 +48,7 @@ public class Recommend {
         }
 
         System.out.println("使用基于物品的协同过滤算法");
-        System.out.println("根据用户2当前浏览的商品2，推荐2个相似的商品");
+        System.out.println("根据用户2当前浏览的帖子2，推荐2个相似的商品");
         for (RecommendedItem recommendedItem : recommendedItemList) {
             System.out.println(recommendedItem);
         }
